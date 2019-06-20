@@ -1,0 +1,59 @@
+// 渲染进程中自定义右键菜单
+const { Menu } = require('electron').remote
+const { remote } = require('electron')
+
+// 菜单项目
+let menus = [
+  {
+    label: '文件',
+    submenu: [
+      {
+        label: '新建文件',
+        accelerator: 'ctrl+n', // 绑定快捷键
+        click: function() {
+          console.log('新建文件')
+        }
+      },
+      {
+        label: '新建窗口',
+        click: function() {
+          console.log('新建窗口')
+        }
+      }
+    ]
+  },
+  {
+    label: '编辑',
+    submenu: [
+      {
+        label: '复制',
+        role: 'copy'
+      },
+      {
+        label: '剪切',
+        role: 'cut'
+      }
+    ]
+  },
+  {
+    label: '视图',
+    submenu: [
+      {
+        label: '浏览'
+      },
+      {
+        label: '搜索'
+      }
+    ]
+  }
+]
+
+let m = Menu.buildFromTemplate(menus)
+
+// 绑定右键菜单
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault()
+  m.popup({
+    window: remote.getCurrentWindow()
+  })
+}, false)
